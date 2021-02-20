@@ -1,4 +1,4 @@
-import vm from 'vm-browserify';
+import vm from 'vm';
 import mapObject from 'map-obj';
 import {
   parseText,

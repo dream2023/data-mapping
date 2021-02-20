@@ -1,10 +1,10 @@
 {
   "name": "@dream2023/data-mapping",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "@dream2023/data-mapping is a perfect object mapping solution。",
   "license": "MIT",
-  "main": "./lib/index",
-  "module": "./es/index",
+  "main": "./dist/index.js",
+  "module": "./dist/index.esm.js",
   "unpkg": "./dist/index.umd.js",
   "types": "./dist/index.d.ts",
   "sideEffects": false,
@@ -34,9 +34,7 @@
     "test": "yarn test"
   },
   "files": [
-    "dist",
-    "es",
-    "lib"
+    "dist"
   ],
   "browserslist": [
     ">0.2%",
@@ -44,13 +42,13 @@
     "not op_mini all"
   ],
   "dependencies": {
-    "map-obj": "^4.1.0",
-    "vm-browserify": "^1.1.2"
+    "map-obj": "^4.1.0"
   },
   "devDependencies": {
     "@types/jest": "^26.0.20",
     "father-build": "^1.19.1",
     "jest": "^26.6.3",
+    "rollup-plugin-node-polyfills": "^0.2.1",
     "ts-jest": "^26.5.1",
     "typescript": "^4.1.5"
   }
