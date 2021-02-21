@@ -1,14 +1,19 @@
 <h1 align="center">@dream2023/data-mapping</h1>
 
+![npm version](https://img.shields.io/npm/v/@dream2023/data-mapping?style=for-the-badge)
+![npm bundle size](https://img.shields.io/bundlephobia/minzip/@dream2023/data-mapping?style=for-the-badge)
+![npm downloads](https://img.shields.io/npm/dt/@dream2023/data-mapping?style=for-the-badge)
+![NPM](https://img.shields.io/npm/l/@dream2023/data-mapping?style=for-the-badge)
+
 ## 介绍
 
 `@dream2023/data-mapping` 通过抽离并融合 `vue 2` 中的表达式解析能力，以及自身的数据映射能力，形成了小巧而功能完善的表达式和对象解析引擎。
 
 ## 特点
 
-- 体积小（7kb）；
-- 支持深度对象、自定义分隔符、自定义过滤器等；
-- 测试覆盖率 100%，减少 BUG 可能性。
+- 体积小：源码 3Kb + 依赖 4Kb = 7Kb；
+- 能力强：支持深度对象、自定义分隔符、自定义过滤器等；
+- 稳定性高：测试覆盖率 100%。
 
 ## 快速上手
 
