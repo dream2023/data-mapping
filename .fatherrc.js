@@ -1,10 +1,13 @@
+import nodePolyfills from 'rollup-plugin-node-polyfills';
+
 export default {
-  cjs: 'babel',
+  cjs: 'rollup',
   esm: {
-    type: 'babel',
+    type: 'rollup',
     importLibToEs: true
   },
   umd: {
     name: 'dataMapping'
-  }
+  },
+  extraRollupPlugins: [nodePolyfills()],
 };
