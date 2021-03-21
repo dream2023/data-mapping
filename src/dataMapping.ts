@@ -36,6 +36,8 @@ export function dataMapping(
     (key: any, val: any) => {
       if (typeof val === 'string') {
         return [key, compilerStr(val, data)];
+      } else if (typeof val === 'function') {
+        return [key, val(data)];
       } else {
         return [key, val];
       }

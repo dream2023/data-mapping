@@ -1,6 +1,6 @@
 {
   "name": "@dream2023/data-mapping",
-  "version": "0.0.2",
+  "version": "1.0.0",
   "description": "@dream2023/data-mapping is a perfect object mapping solution。",
   "license": "MIT",
   "main": "./dist/index.js",
@@ -31,7 +31,7 @@
   },
   "scripts": {
     "build": "father-build",
-    "test": "yarn test"
+    "test": "yarn jest"
   },
   "files": [
     "dist"

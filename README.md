@@ -91,6 +91,21 @@ dataMapping(
 
 当然，其也是支持深度嵌套，以及上述 `compilerStr` 所有特性。
 
+```js
+// 支持函数
+dataMapping(
+  {
+    country(data: any) {
+      return data.address.split('-')[0];
+    },
+    province(data: any) {
+      return data.address.split('-')[1];
+    }
+  },
+  { address: 'china-guangzhou' }
+); // { country: 'china', province: 'guangzhou' }
+```
+
 ### 过滤器
 
 过滤器是对数据映射的一种增强，它的作用是对获取数据做一些处理，其用法同 vue2 中的[过滤器](https://cn.vuejs.org/v2/guide/filters.html)：

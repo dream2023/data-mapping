@@ -100,6 +100,22 @@ describe('dataMapping', () => {
     ).toEqual({ foo: 456, bar: 'test', zoo: 'zoo' });
   });
 
+  test('值为函数', () => {
+    expect(
+      dataMapping(
+        {
+          country(data: any) {
+            return data.address.split('-')[0];
+          },
+          province(data: any) {
+            return data.address.split('-')[1];
+          }
+        },
+        { address: 'china-guangzhou' }
+      )
+    ).toEqual({ country: 'china', province: 'guangzhou' });
+  });
+
   test('深度 schema 映射', () => {
     expect(dataMapping({ foo: { bar: '{{bar}}' } }, { bar: 123 })).toEqual({
       foo: { bar: 123 }
