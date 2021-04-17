@@ -13,6 +13,10 @@ describe('compilerStr', () => {
     expect(compilerStr('this is {{foo}}', null)).toBe('this is {{foo}}');
   });
 
+  test('str 为 undefined', () => {
+    expect(compilerStr(undefined, { name: 'age' })).toBe(undefined);
+  });
+
   test('str 仅有字符串', () => {
     expect(compilerStr('this is str', {})).toBe('this is str');
   });
