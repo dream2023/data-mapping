@@ -1,6 +1,6 @@
 {
   "name": "@dream2023/data-mapping",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "@dream2023/data-mapping is a perfect object mapping solution。",
   "license": "MIT",
   "main": "./dist/index.js",

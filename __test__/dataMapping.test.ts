@@ -66,6 +66,19 @@ describe('compilerStr', () => {
   });
 
   test('自定义分隔符', () => {
+    expect(
+      // eslint-disable-next-line no-template-curly-in-string
+      compilerStr(
+        '${foo}',
+        {
+          foo: 'bar'
+        },
+        ['${', '}']
+      )
+    ).toBe('bar');
+  });
+
+  test('配置自定义分隔符', () => {
     setDelimiters(['${', '}']);
     expect(
       // eslint-disable-next-line no-template-curly-in-string
@@ -162,6 +175,19 @@ describe('dataMapping', () => {
   });
 
   test('自定义分隔符', () => {
+    expect(
+      dataMapping(
+        // eslint-disable-next-line no-template-curly-in-string
+        { name: '${info.name}' },
+        {
+          info: { name: 'jack' }
+        },
+        ['${', '}']
+      )
+    ).toEqual({ name: 'jack' });
+  });
+
+  test('配置自定义分隔符', () => {
     setDelimiters(['${', '}']);
     expect(
       dataMapping(

@@ -11,11 +11,12 @@ import {
 // 字符串编译
 export function compilerStr(
   str: string,
-  data: Record<string, any> | null | undefined
+  data: Record<string, any> | null | undefined,
+  delimiters?: [string, string]
 ) {
   // 如果 data 为空，则直接返回字符串
   if (isNil(data)) return str;
-  const exp = parseText(str, getDelimiters());
+  const exp = parseText(str, delimiters || getDelimiters());
   // 字符串和表达式相同，则直接返回字符串
   // 否则进行解析，并将数据和过滤器传递进去
   return exp === `"${str}"`
@@ -26,7 +27,8 @@ export function compilerStr(
 // 对象数据映射
 export function dataMapping(
   schema: Record<string, any> | null | undefined,
-  data: Record<string, any> | null | undefined
+  data: Record<string, any> | null | undefined,
+  delimiters?: [string, string]
 ) {
   if (isNil(data) || isNil(schema)) return schema;
 
@@ -35,7 +37,7 @@ export function dataMapping(
     schema,
     (key: any, val: any) => {
       if (typeof val === 'string') {
-        return [key, compilerStr(val, data)];
+        return [key, compilerStr(val, data, delimiters)];
       } else if (typeof val === 'function') {
         return [key, val(data)];
       } else {
