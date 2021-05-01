@@ -108,6 +108,10 @@ describe('dataMapping', () => {
     expect(dataMapping(null, { name: '123' })).toEqual(null);
   });
 
+  test('schema 为字符串时', () => {
+    expect(dataMapping('{{num + 1}}', { num: 1 })).toEqual(2);
+  });
+
   test('对象映射', () => {
     expect(
       dataMapping(

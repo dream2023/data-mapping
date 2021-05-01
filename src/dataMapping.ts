@@ -26,11 +26,13 @@ export function compilerStr(
 
 // 对象数据映射
 export function dataMapping(
-  schema?: Record<string, any> | null,
+  schema?: Record<string, any> | string | null,
   data?: Record<string, any> | null,
   delimiters?: [string, string]
 ) {
   if (isNil(data) || isNil(schema)) return schema;
+
+  if (typeof schema === 'string') return compilerStr(schema, data, delimiters);
 
   // 遍历每个 schema 对象
   const res = mapObject(
