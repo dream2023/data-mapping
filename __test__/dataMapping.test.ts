@@ -112,6 +112,10 @@ describe('dataMapping', () => {
     expect(dataMapping('{{num + 1}}', { num: 1 })).toEqual(2);
   });
 
+  test('schema 为函数时', () => {
+    expect(dataMapping((data) => data.num + 1, { num: 1 })).toEqual(2);
+  });
+
   test('对象映射', () => {
     expect(
       dataMapping(

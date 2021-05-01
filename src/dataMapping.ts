@@ -1,11 +1,11 @@
 import vm from 'vm';
 import mapObject from 'map-obj';
 import {
-  parseText,
-  getDelimiters,
-  getFilters,
+  isNil,
   replace$,
-  isNil
+  parseText,
+  getFilters,
+  getDelimiters
 } from './helpers';
 
 // 字符串编译
@@ -24,15 +24,23 @@ export function compilerStr(
     : vm.runInNewContext(exp, { ...data, ...getFilters() });
 }
 
+export type SchemaType =
+  | Record<string, any>
+  | ((data: any) => any)
+  | string
+  | null
+  | undefined;
+
 // 对象数据映射
 export function dataMapping(
-  schema?: Record<string, any> | string | null,
+  schema: SchemaType,
   data?: Record<string, any> | null,
   delimiters?: [string, string]
 ) {
   if (isNil(data) || isNil(schema)) return schema;
 
   if (typeof schema === 'string') return compilerStr(schema, data, delimiters);
+  if (typeof schema === 'function') return schema(data);
 
   // 遍历每个 schema 对象
   const res = mapObject(
