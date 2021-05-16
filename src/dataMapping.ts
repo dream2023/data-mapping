@@ -31,13 +31,23 @@ export type SchemaType =
   | null
   | undefined;
 
+interface DataMappingOptions {
+  schema: SchemaType;
+  data?: Record<string, any> | null;
+  delimiters?: [string, string];
+  defaultValue?: 'schema' | 'data';
+}
+
 // 对象数据映射
-export function dataMapping(
-  schema: SchemaType,
-  data?: Record<string, any> | null,
-  delimiters?: [string, string]
-) {
-  if (isNil(data) || isNil(schema)) return schema;
+export function dataMapping({
+  schema,
+  data,
+  delimiters,
+  defaultValue = 'schema'
+}: DataMappingOptions) {
+  if (isNil(data) || isNil(schema)) {
+    return defaultValue === 'schema' ? schema : data;
+  }
 
   if (typeof schema === 'string') return compilerStr(schema, data, delimiters);
   if (typeof schema === 'function') return schema(data);

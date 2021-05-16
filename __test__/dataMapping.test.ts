@@ -97,38 +97,61 @@ describe('compilerStr', () => {
 
 describe('dataMapping', () => {
   test('data 或 schema 为 undefined 或者 null 时，返回 schema', () => {
-    expect(dataMapping({ name: '{{name}}' }, undefined)).toEqual({
+    expect(
+      dataMapping({ schema: { name: '{{name}}' }, data: undefined })
+    ).toEqual({
       name: '{{name}}'
     });
-    expect(dataMapping({ name: '{{name}}' }, null)).toEqual({
+    expect(dataMapping({ schema: { name: '{{name}}' }, data: null })).toEqual({
       name: '{{name}}'
     });
 
-    expect(dataMapping(undefined, { name: '123' })).toEqual(undefined);
-    expect(dataMapping(null, { name: '123' })).toEqual(null);
+    expect(dataMapping({ schema: undefined, data: { name: '123' } })).toEqual(
+      undefined
+    );
+    expect(dataMapping({ schema: null, data: { name: '123' } })).toEqual(null);
+  });
+  test('data 或 schema 为 undefined 或者 null 时，返回 data', () => {
+    expect(
+      dataMapping({
+        schema: undefined,
+        data: { foo: 'bar' },
+        defaultValue: 'data'
+      })
+    ).toEqual({
+      foo: 'bar'
+    });
+
+    expect(
+      dataMapping({ schema: null, data: { foo: 'bar' }, defaultValue: 'data' })
+    ).toEqual({
+      foo: 'bar'
+    });
   });
 
   test('schema 为字符串时', () => {
-    expect(dataMapping('{{num + 1}}', { num: 1 })).toEqual(2);
+    expect(dataMapping({ schema: '{{num + 1}}', data: { num: 1 } })).toEqual(2);
   });
 
   test('schema 为函数时', () => {
-    expect(dataMapping((data) => data.num + 1, { num: 1 })).toEqual(2);
+    expect(
+      dataMapping({ schema: (data) => data.num + 1, data: { num: 1 } })
+    ).toEqual(2);
   });
 
   test('对象映射', () => {
     expect(
-      dataMapping(
-        { foo: 456, bar: '{{bar}}', zoo: 'zoo' },
-        { foo: 123, bar: 'test' }
-      )
+      dataMapping({
+        schema: { foo: 456, bar: '{{bar}}', zoo: 'zoo' },
+        data: { foo: 123, bar: 'test' }
+      })
     ).toEqual({ foo: 456, bar: 'test', zoo: 'zoo' });
   });
 
   test('值为函数', () => {
     expect(
-      dataMapping(
-        {
+      dataMapping({
+        schema: {
           country(data: any) {
             return data.address.split('-')[0];
           },
@@ -136,31 +159,39 @@ describe('dataMapping', () => {
             return data.address.split('-')[1];
           }
         },
-        { address: 'china-guangzhou' }
-      )
+        data: { address: 'china-guangzhou' }
+      })
     ).toEqual({ country: 'china', province: 'guangzhou' });
   });
 
   test('深度 schema 映射', () => {
-    expect(dataMapping({ foo: { bar: '{{bar}}' } }, { bar: 123 })).toEqual({
+    expect(
+      dataMapping({ schema: { foo: { bar: '{{bar}}' } }, data: { bar: 123 } })
+    ).toEqual({
       foo: { bar: 123 }
     });
   });
 
   test('深度 data 映射', () => {
     expect(
-      dataMapping({ name: '{{info.name}}' }, { info: { name: 'jack' } })
+      dataMapping({
+        schema: { name: '{{info.name}}' },
+        data: { info: { name: 'jack' } }
+      })
     ).toEqual({
       name: 'jack'
     });
   });
 
   test('原生 filter', () => {
-    expect(dataMapping({ num: '{{num | parseInt}}' }, { num: 100.01 })).toEqual(
-      {
-        num: 100
-      }
-    );
+    expect(
+      dataMapping({
+        schema: { num: '{{num | parseInt}}' },
+        data: { num: 100.01 }
+      })
+    ).toEqual({
+      num: 100
+    });
   });
 
   test('自定义 filter', () => {
@@ -169,7 +200,10 @@ describe('dataMapping', () => {
     });
 
     expect(
-      dataMapping({ name: '{{name | toUpperCase}}' }, { name: 'foo' })
+      dataMapping({
+        schema: { name: '{{name | toUpperCase}}' },
+        data: { name: 'foo' }
+      })
     ).toEqual({
       name: 'FOO'
     });
@@ -179,10 +213,10 @@ describe('dataMapping', () => {
 
   test('替换 $', () => {
     expect(
-      dataMapping(
-        { a: '{{a}}', $: '{{info}}' },
-        { a: 'a', info: { name: 'jack', age: 18 } }
-      )
+      dataMapping({
+        schema: { a: '{{a}}', $: '{{info}}' },
+        data: { a: 'a', info: { name: 'jack', age: 18 } }
+      })
     ).toEqual({ a: 'a', name: 'jack', age: 18 });
   });
 
@@ -190,11 +224,13 @@ describe('dataMapping', () => {
     expect(
       dataMapping(
         // eslint-disable-next-line no-template-curly-in-string
-        { name: '${info.name}' },
         {
-          info: { name: 'jack' }
-        },
-        ['${', '}']
+          schema: { name: '${info.name}' },
+          data: {
+            info: { name: 'jack' }
+          },
+          delimiters: ['${', '}']
+        }
       )
     ).toEqual({ name: 'jack' });
   });
@@ -204,9 +240,11 @@ describe('dataMapping', () => {
     expect(
       dataMapping(
         // eslint-disable-next-line no-template-curly-in-string
-        { name: '${info.name}' },
         {
-          info: { name: 'jack' }
+          schema: { name: '${info.name}' },
+          data: {
+            info: { name: 'jack' }
+          }
         }
       )
     ).toEqual({ name: 'jack' });

@@ -26,10 +26,10 @@ import { compilerStr, dataMapping } from '@dream2023/data-mapping';
 
 compilerStr('{{name}}', { name: 'jack' }); // "jack"
 
-dataMapping(
-  { username: '{{ info.name }}', address: '{{ address }}' },
-  { info: { name: '夏洛克福尔摩斯' }, address: '伦敦贝克街221号' }
-); // { username: '夏洛克福尔摩斯', address: '伦敦贝克街221号' }
+dataMapping({
+  schema: { username: '{{ info.name }}', address: '{{ address }}' },
+  data: { info: { name: '夏洛克福尔摩斯' }, address: '伦敦贝克街221号' }
+}); // { username: '夏洛克福尔摩斯', address: '伦敦贝克街221号' }
 ```
 
 ## 功能详解
@@ -83,18 +83,18 @@ compilerStr(
 `@dream2023/data-mapping` 不仅提供了对字符串的编译，还提供了对对象的编译。
 
 ```js
-dataMapping(
-  { username: '{{name}}', password: '{{pwd}}' },
-  { name: 'jack', pwd: 'helloworld' }
-); // { username: 'jack', password: 'helloworld' }
+dataMapping({
+  schema: { username: '{{name}}', password: '{{pwd}}' },
+  data: { name: 'jack', pwd: 'helloworld' }
+}); // { username: 'jack', password: 'helloworld' }
 ```
 
 当然，其也是支持深度嵌套，以及上述 `compilerStr` 所有特性。
 
 ```js
 // 支持函数
-dataMapping(
-  {
+dataMapping({
+  schema: {
     country(data: any) {
       return data.address.split('-')[0];
     },
@@ -102,8 +102,8 @@ dataMapping(
       return data.address.split('-')[1];
     }
   },
-  { address: 'china-guangzhou' }
-); // { country: 'china', province: 'guangzhou' }
+  data: { address: 'china-guangzhou' }
+}); // { country: 'china', province: 'guangzhou' }
 ```
 
 ### 过滤器
@@ -167,32 +167,32 @@ clearDelimiters();
 我们首先看下面示例，我们需要将 `longitude` 和 `latitude` 从 `loc` 字段中抽离到上一层级，我们就需要下面这样写 👇：
 
 ```js
-dataMapping(
-  {
+dataMapping({
+  schema: {
     name: '{{name}}',
     longitude: '{{loc.longitude}}',
     latitude: '{{loc.latitude}}'
   },
-  {
+  data: {
     name: 'jack',
     loc: { longitude: 118.366899, latitude: 40.90281 }
   }
-); // {  name: 'jack', longitude: 118.366899, latitude: 40.90281 }
+}); // {  name: 'jack', longitude: 118.366899, latitude: 40.90281 }
 ```
 
 其实两个字段还好，如果属性非常多的时候就比较麻烦，此时我们可以通过 `$` 便捷的实现展开：
 
 ```js
-dataMapping(
-  {
+dataMapping({
+  schema: {
     name: '{{name}}',
     $: '{{loc}}'
   },
-  {
+  data: {
     name: 'jack',
     loc: { longitude: 118.366899, latitude: 40.90281 }
   }
-); // {  name: 'jack', longitude: 118.366899, latitude: 40.90281 }
+}); // {  name: 'jack', longitude: 118.366899, latitude: 40.90281 }
 ```
 
 ## 相关链接
