@@ -31,7 +31,7 @@ export type SchemaType =
   | null
   | undefined;
 
-interface DataMappingOptions {
+export interface DataMappingOptions {
   schema: SchemaType;
   data?: Record<string, any> | null;
   delimiters?: [string, string];
