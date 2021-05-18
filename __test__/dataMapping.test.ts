@@ -96,7 +96,7 @@ describe('compilerStr', () => {
 });
 
 describe('dataMapping', () => {
-  test('data 或 schema 为 undefined 或者 null 时，返回 schema', () => {
+  test('data 或 schema 为 undefined 或者 null 时，返回 schema-data', () => {
     expect(
       dataMapping({ schema: { name: '{{name}}' }, data: undefined })
     ).toEqual({
@@ -106,10 +106,12 @@ describe('dataMapping', () => {
       name: '{{name}}'
     });
 
-    expect(dataMapping({ schema: undefined, data: { name: '123' } })).toEqual(
-      undefined
-    );
-    expect(dataMapping({ schema: null, data: { name: '123' } })).toEqual(null);
+    expect(dataMapping({ schema: undefined, data: { name: '123' } })).toEqual({
+      name: '123'
+    });
+    expect(dataMapping({ schema: null, data: { name: '123' } })).toEqual({
+      name: '123'
+    });
   });
   test('data 或 schema 为 undefined 或者 null 时，返回 data', () => {
     expect(
@@ -127,6 +129,23 @@ describe('dataMapping', () => {
     ).toEqual({
       foo: 'bar'
     });
+  });
+  test('data 或 schema 为 undefined 或者 null 时，返回 schema', () => {
+    expect(
+      dataMapping({
+        schema: undefined,
+        data: { foo: 'bar' },
+        defaultValue: 'schema'
+      })
+    ).toEqual(undefined);
+
+    expect(
+      dataMapping({
+        schema: null,
+        data: { foo: 'bar' },
+        defaultValue: 'schema'
+      })
+    ).toEqual(null);
   });
 
   test('schema 为字符串时', () => {

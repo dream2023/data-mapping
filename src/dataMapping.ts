@@ -35,7 +35,7 @@ export interface DataMappingOptions {
   schema: SchemaType;
   data?: Record<string, any> | null;
   delimiters?: [string, string];
-  defaultValue?: 'schema' | 'data';
+  defaultValue?: 'schema' | 'data' | 'schema-data';
 }
 
 // 对象数据映射
@@ -43,10 +43,17 @@ export function dataMapping({
   schema,
   data,
   delimiters,
-  defaultValue = 'schema'
+  defaultValue = 'schema-data'
 }: DataMappingOptions) {
   if (isNil(data) || isNil(schema)) {
-    return defaultValue === 'schema' ? schema : data;
+    switch (defaultValue) {
+      case 'schema':
+        return schema;
+      case 'data':
+        return data;
+      default:
+        return schema ? schema : data;
+    }
   }
 
   if (typeof schema === 'string') return compilerStr(schema, data, delimiters);
